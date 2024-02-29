@@ -1,6 +1,6 @@
 ﻿namespace TextIO.Events;
 
-public record CreateRoomEvent
+public record RoomCreated
 {
     public string RoomName { get; set; }
 }

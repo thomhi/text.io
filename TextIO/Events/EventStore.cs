@@ -6,6 +6,6 @@ public sealed class EventStore
 
     public void StoreEvent(List<EventBase> events)
     {
-        Events.AddRange(events);
+        Events.AddRange(events);    
     }
 }

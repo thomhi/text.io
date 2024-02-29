@@ -12,12 +12,12 @@ public static class ApiCommand
         app.MapPost("/create-room/{name}", (string name, TextDbContext ctx, EventStore evtStore) =>
         {
             evtStore.StoreEvent([
-                new Event<CreateRoomEvent>()
+                new Event<RoomCreated>()
                 {
-                    Type = nameof(CreateRoomEvent),
+                    Type = nameof(RoomCreated),
                     Subject = "Host",
                     TimeStamp = DateTime.UtcNow,
-                    Data = new CreateRoomEvent() { RoomName = name }
+                    Data = new RoomCreated() { RoomName = name }
                 }
             ]);
 
