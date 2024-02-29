@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextIO", "TextIO\TextIO.csproj", "{BDCC2C37-0C1C-494C-8F86-D2C661E62C37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextIO", "TextIO\TextIO.csproj", "{BDCC2C37-0C1C-494C-8F86-D2C661E62C37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataManager", "DataManager\DataManager.csproj", "{B8372D87-C316-40E2-A74F-0581B58E0B42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BDCC2C37-0C1C-494C-8F86-D2C661E62C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDCC2C37-0C1C-494C-8F86-D2C661E62C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDCC2C37-0C1C-494C-8F86-D2C661E62C37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8372D87-C316-40E2-A74F-0581B58E0B42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8372D87-C316-40E2-A74F-0581B58E0B42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8372D87-C316-40E2-A74F-0581B58E0B42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8372D87-C316-40E2-A74F-0581B58E0B42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
