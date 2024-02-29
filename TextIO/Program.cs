@@ -13,6 +13,7 @@ builder.Services
 builder.Services.AddDbContextFactory<TextDbContext>();
 builder.Services.AddSingleton<EventStore>();
 builder.Services.AddSingleton<Statistics>();
+builder.Services.AddHostedService<Projection>();
 var app = builder.Build();
 // ----------------------------------------- APPLICATION -----------------------------------------------------
 

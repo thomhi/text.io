@@ -1,5 +1,6 @@
 ﻿using DataManager;
 using DataManager.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using TextIO.Events;
 
@@ -11,7 +12,7 @@ public static class ApiCommand
     {
         app.MapPost("/create-room/{name}", (string name, TextDbContext ctx, EventStore evtStore) =>
         {
-            evtStore.StoreEvent([
+            evtStore.StoreEvent(
                 new Event<RoomCreated>()
                 {
                     Type = nameof(RoomCreated),
@@ -19,9 +20,10 @@ public static class ApiCommand
                     TimeStamp = DateTime.UtcNow,
                     Data = new RoomCreated() { RoomName = name }
                 }
-            ]);
+            );
 
-            ctx.Rooms.Add(new Room { Name = name, CurrentWordToGuess = "test" });
+            ctx.Rooms.Add(new Room { Name = name, CurrentWordToGuess = null });
+            ctx.SaveChanges();
             return TypedResults.Ok();
         }).AddEndpointFilter(async (invocationContext, next) =>
         {
@@ -39,13 +41,51 @@ public static class ApiCommand
             return await next(invocationContext);
         });
 
+
+        app.MapPost("/guess-word/{roomName}/{user}/{guess}", Results<Ok<string>, NotFound<string>> (TextDbContext ctx, EventStore eventStore, string guess, string user, string roomName) =>
+        {
+            eventStore.StoreEvent(new Event<WordGuessed>()
+            {
+                Type = nameof(WordGuessed),
+                Subject = "Player",
+                TimeStamp = DateTime.UtcNow,
+                Data = new WordGuessed() { Word = guess, RoomName = roomName, User = user }
+            });
+            if (ctx.Rooms.Any(r => r.Name == roomName && r.CurrentWordToGuess == guess))
+            {
+                return TypedResults.Ok("Correct");
+            }
+            if (ctx.Rooms.Any(r => r.Name == roomName))
+            {
+                return TypedResults.Ok("Incorrect");
+            }
+            return TypedResults.NotFound("Room does not exist");
+        });
+
+
+        //app.MapPost("/describe/{roomName}/{user}/{description}", (TextDbContext ctx, EventStore eventStore, string description, string user, string roomName) =>
+        //{
+        //    eventStore.StoreEvent(new Event<WordDescribed>()
+        //    {
+        //        Type = nameof(WordDescribed),
+        //        Subject = "Player",
+        //        TimeStamp = DateTime.UtcNow,
+        //        Data = new WordDescribed() { Description = description, RoomName = roomName, User = user }
+        //    });
+        //    if (ctx.Rooms.Any(r => r.Name == roomName))
+        //    {
+        //        return TypedResults.Ok("Transmitted");
+        //    }
+        //    return TypedResults.Problem("Room does not exist");
+        //});
+
         app.MapPost("/add-word-to-wordlist/{word}", (string word, TextDbContext ctx) =>
         {
             ctx.Words.Add(new Words { Word = word });
             ctx.SaveChanges();
         });
 
-        app.MapPost("/CleanUp", (TextDbContext ctx) =>
+        app.MapPost("/clean-up", (TextDbContext ctx) =>
         {
             ctx.Database.ExecuteSqlRaw("DELETE FROM Words");
             ctx.Database.ExecuteSqlRaw("DELETE FROM Rooms");

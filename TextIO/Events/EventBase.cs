@@ -1,6 +1,8 @@
 ﻿namespace TextIO.Events;
 
-public abstract record EventBase
+public record EventBase
 {
-
+    public string Type { get; set; }
+    public DateTime TimeStamp { get; set; }
+    public string Subject { get; set; }
 }
