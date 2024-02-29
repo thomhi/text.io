@@ -3,6 +3,7 @@
 using DataManager;
 using TextIO;
 using TextIO.Events;
+using TextIO.ReadData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services
     .AddSwaggerGen();
 builder.Services.AddDbContextFactory<TextDbContext>();
 builder.Services.AddSingleton<EventStore>();
+builder.Services.AddSingleton<Statistics>();
 var app = builder.Build();
 // ----------------------------------------- APPLICATION -----------------------------------------------------
 

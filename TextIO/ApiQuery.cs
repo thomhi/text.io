@@ -1,4 +1,5 @@
 ﻿using DataManager;
+using TextIO.ReadData;
 
 namespace TextIO;
 
@@ -13,6 +14,7 @@ public static class ApiQuery
             return ctx.Words.Find(randomId);
         });
 
+        app.MapGet("/event-statistics", (Statistics sta) => TypedResults.Ok(sta.EventCounts));
         return app;
     }
 }
