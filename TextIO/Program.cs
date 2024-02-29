@@ -7,7 +7,8 @@ builder.Services
 var app = builder.Build();
 // ----------------------------------------- APPLICATION -----------------------------------------------------
 
-app.MapGet("/", () => "Hello World!");
+app.MapPost("/create-room/{name}", (string name) => Console.WriteLine($"Creating of Room {name}"));
+
 
 app.UseSwagger();
 app.UseSwaggerUI();
