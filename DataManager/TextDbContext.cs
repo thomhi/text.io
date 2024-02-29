@@ -19,6 +19,8 @@ public class TextDbContext :
     }
 
     public DbSet<Words> Words { get; set; } = null!;
+    public DbSet<Room> Rooms { get; set; } = null!;
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
