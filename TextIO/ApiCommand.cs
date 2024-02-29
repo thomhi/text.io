@@ -1,5 +1,6 @@
 ﻿using DataManager;
 using DataManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TextIO;
 
@@ -31,6 +32,12 @@ public static class ApiCommand
         {
             ctx.Words.Add(new Words { Word = word });
             ctx.SaveChanges();
+        });
+
+        app.MapPost("/CleanUp", (TextDbContext ctx) =>
+        {
+            ctx.Database.ExecuteSqlRaw("DELETE FROM Words");
+            ctx.Database.ExecuteSqlRaw("DELETE FROM Rooms");
         });
         return app;
     }
