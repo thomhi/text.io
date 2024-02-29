@@ -5,6 +5,7 @@ namespace TextIO.ReadData;
 
 public sealed class Projection(Statistics statistics, EventStore eventStore) : IHostedService
 {
+    private IDisposable? _disposableSub;
     public void OnEvent(EventBase ev)
     {
         switch (ev.Type)
@@ -23,12 +24,13 @@ public sealed class Projection(Statistics statistics, EventStore eventStore) : I
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        eventStore.EventsStream.Subscribe(OnEvent);
+        _disposableSub = eventStore.EventsStream.Subscribe(OnEvent);
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
     {
+        _disposableSub?.Dispose();
         return Task.CompletedTask;
     }
 }
