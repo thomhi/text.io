@@ -23,7 +23,7 @@ public sealed class Projection(Statistics statistics, EventStore eventStore) : I
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        eventStore.EventsStream.Do(OnEvent);
+        eventStore.EventsStream.Subscribe(OnEvent);
         return Task.CompletedTask;
     }
 

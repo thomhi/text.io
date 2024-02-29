@@ -7,7 +7,7 @@ public sealed class EventStore
 {
     public List<EventBase> Events { get; } = [];
 
-    public IObservable<EventBase> EventsStream { get; set; } = new Subject<EventBase>();
+    public Subject<EventBase> EventsStream { get; set; } = new Subject<EventBase>();
 
     public void StoreEvent(List<EventBase> events)
     {
@@ -21,6 +21,6 @@ public sealed class EventStore
     public void StoreEvent(EventBase ev)
     {
         Events.Add(ev);
-        EventsStream.Publish(ev);
+        EventsStream.OnNext(ev);
     }
 }
