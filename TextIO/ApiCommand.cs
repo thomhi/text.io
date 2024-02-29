@@ -1,6 +1,7 @@
 ﻿using DataManager;
 using DataManager.Models;
 using Microsoft.EntityFrameworkCore;
+using TextIO.Events;
 
 namespace TextIO;
 
@@ -8,8 +9,18 @@ public static class ApiCommand
 {
     public static WebApplication AddCommandApi(this WebApplication app)
     {
-        app.MapPost("/create-room/{name}", (string name, TextDbContext ctx) =>
+        app.MapPost("/create-room/{name}", (string name, TextDbContext ctx, EventStore evtStore) =>
         {
+            evtStore.StoreEvent([
+                new Event<CreateRoomEvent>()
+                {
+                    Type = nameof(CreateRoomEvent),
+                    Subject = "Host",
+                    TimeStamp = DateTime.UtcNow,
+                    Data = new CreateRoomEvent() { RoomName = name }
+                }
+            ]);
+
             ctx.Rooms.Add(new Room { Name = name, CurrentWordToGuess = "test" });
             return TypedResults.Ok();
         }).AddEndpointFilter(async (invocationContext, next) =>

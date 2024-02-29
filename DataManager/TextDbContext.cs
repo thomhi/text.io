@@ -14,7 +14,7 @@ public class TextDbContext :
     private readonly string _connectionString;
     public TextDbContext(IConfiguration config)
     {
-        var relativePath = config.GetConnectionString("LotteryDraws") ?? throw new NullReferenceException();
+        var relativePath = config.GetConnectionString("TextDb") ?? throw new NullReferenceException();
         _connectionString = Path.GetFullPath(relativePath);
     }
 
